@@ -1,42 +1,40 @@
-import io.qameta.allure.Step;
+import Driver.WebDR;
+
 import org.junit.Test;
 
-public class Test1 extends WebDR {
-    Action steps = new Action();
-    WaitTimer timer = new WaitTimer();
-    PageObject po = new PageObject();
+import static PageInfo.ActionPage.*;
+import static PropertyParser.PropertyReader.*;
+import static SimpleActions.ActionsAPI.*;
 
+public class Test1 extends WebDR {
     @Test
-    public void test1() {
+    public void test1() throws Exception {
         //Шаг 1 переход на страницу
-        steps.PageNavigate("https://www.wiley.com/en-ru");
+        PageNavigate(getPropertyReader("baseURL"));
         //Шаг 2 ожидание окончания страницы и проверка присутствия элементов на странице
-        timer.ExpectedConditionsTimer();
-        steps.resoursesCh();
-        steps.subjectsCh();
-        steps.aboutCh();
+        resoursesCh();
+        subjectsCh();
+        aboutCh();
         /*Проверка значений вкладки Resources*/
-        steps.resItems();
+        resItems();
         /*Шаг 3 Проверка страницы студенты */
-        steps.StudentsPage();
+        StudentsPage();
         /*Шаг 4 Проверка страницы Образование */
-        steps.EducationPage();
+        EducationPage();
         /*Шаг 5 Переход на главную страницу*/
-        steps.HomePageClick();
+        HomePageClick();
         /*Шаг 6 нажатие на поиск*/
-        steps.SearchBtnClick();
-        timer.timer(1);
+        SearchBtnClick();
         /*Шаг 7 Ввод данных в строку поиска "Математика"*/
-        steps.SeachText("Math");
-        timer.timer(5);
-        steps.SearchBtnClick();
+        SeachText(getPropertyReader("SeachText"));
+        SearchBtnClick();
         /*Шаг 8 Проверка на количество элементов с титулом Math и проверка хотябы одной кнопки Add to cart*/
-        steps.TitleProductsSearch("1");
+        TitleProductsSearch(getPropertyReader("TitleProductsSearch1"));
         /*Шаг 9 Ввод данных в строку поиска "Математика"*/
-        steps.SeachText("Math");
-        steps.SearchBtnClick();
+       // SeachText(getPropertyReader("SeachText"));
+        SearchBtnClick();
         /*Шаг 10 Повторная проверка MATH*/
-        steps.TitleProductsSearch("2");
+        TitleProductsSearch(getPropertyReader("TitleProductsSearch2"));
 
     }
 }
