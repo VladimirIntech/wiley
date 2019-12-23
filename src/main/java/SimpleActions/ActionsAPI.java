@@ -15,12 +15,12 @@ public abstract class ActionsAPI {
 
 
 
-    public static void open(String url) {
+    public static void navigateToUrl(String url) {
      //   driver.navigate().to(url);
         getDriver().navigate().to(url);
     }
 
-    public static WebElement find(String locator) {
+    public static WebElement findElement(String locator) {
         return new WebDriverWait(getDriver(), getTimeout()).until(ExpectedConditions.elementToBeClickable(By.xpath(locator))).findElement(By.xpath(locator));
         //getDriver().findElement(locator);
     }
@@ -31,7 +31,7 @@ public abstract class ActionsAPI {
     }
 
     public static void actionsWith(String object) {
-        new Actions(driver).moveToElement(find(object)).perform();
+        new Actions(driver).moveToElement(findElement(object)).perform();
     }
 
     public static Boolean check(String objectCheck) {
@@ -39,11 +39,11 @@ public abstract class ActionsAPI {
 
     }
 
-    public static List<WebElement> List_find(String listObject) {
+    public static List<WebElement> findElementList(String listObject) {
         return driver.findElements(By.xpath(listObject));
     }
 
-    public static void Click (String objectClick) {
+    public static void click(String objectClick) {
         new WebDriverWait(getDriver(), getTimeout()).until(ExpectedConditions.elementToBeClickable(By.xpath(objectClick))).click();
     }
 

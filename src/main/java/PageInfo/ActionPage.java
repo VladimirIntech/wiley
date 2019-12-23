@@ -10,7 +10,7 @@ import java.util.List;
 
 import static Logger.LogReader.*;
 import static PropertyParser.PropertyReader.*;
-import static Driver.WebDR.*;
+
 public class ActionPage extends ObgectPage {
     /*Действия с объектами*/
 
@@ -18,7 +18,7 @@ public class ActionPage extends ObgectPage {
     public static void PageNavigate(String baseUrl) {
         try {
             getLog().log(Level.INFO, "Переход к тестовой странице: " + baseUrl);
-            open(baseUrl);
+            navigateToUrl(baseUrl);
             getLog().log(Level.INFO, "Открыта страница: " + baseUrl);
         } catch (Exception urlEX) {
             getLog().log(Level.ERROR, "Переход на страницу не осуществлен: " + baseUrl, urlEX);
@@ -99,7 +99,7 @@ public class ActionPage extends ObgectPage {
             String[] arItems = {"Students", "Instructors", "Researchers", "Professionals",
                     "Librarians", "Institutions", "Book Authors", "Corporations", "Societies"};
             List<String> listQ = new ArrayList<>();
-            for (WebElement webElement : List_find(getResitems())) {
+            for (WebElement webElement : findElementList(getResitems())) {
                 listQ.add(webElement.getText());
             }
             getLog().log(Level.INFO, "Полученные значения: " + listQ + " Размер: " + listQ.size());
@@ -114,25 +114,25 @@ public class ActionPage extends ObgectPage {
         /*Проверка страницы Студенты*/
         try {
             Resourses();
-            Click(getStudents());
+            click(getStudents());
             if (getDriver().getCurrentUrl().equals(getPropertyReader("pageName"))) {
-                if (find(getTitleStudent()).isDisplayed()) {
+                if (findElement(getTitleStudent()).isDisplayed()) {
 
-                    if (find(getWilleyPlus()).getAttribute(getPropertyReader("getAttributeURL")).equals(getPropertyReader("equalsURL"))) {
+                    if (findElement(getWilleyPlus()).getAttribute(getPropertyReader("getAttributeURL")).equals(getPropertyReader("equalsURL"))) {
                         actionsWith(getWilleyPlus());
                         getLog().log(Level.INFO, "Проверка страницы успешна");
-                    //Assert.assertTrue("Ссылка WileyPlus корректная", true);
+                        Assert.assertTrue("Ссылка WileyPlus корректная", true);
                     } else {
                         getLog().log(Level.INFO, "Ссылка WileyPlus не корректная");
-                        // Assert.fail("Ссылка WileyPlus не корректная");
+                        Assert.fail("Ссылка WileyPlus не корректная");
                     }
                 } else {
                     getLog().log(Level.INFO, "Заголовок Студенты не отображается");
-                    //  Assert.fail("Заголовок Студенты не отображается");
+                    Assert.fail("Заголовок Студенты не отображается");
                 }
             } else {
                 getLog().log(Level.INFO, "Ссылка на странице неверная");
-                // Assert.fail("Ссылка на странице неверная");
+                Assert.fail("Ссылка на странице неверная");
             }
         } catch (Exception exPage) {
             getLog().log(Level.ERROR, "Элемент не найден" + getResitems(), exPage);
@@ -149,17 +149,17 @@ public class ActionPage extends ObgectPage {
                     "Curriculum Tools- General", "Special Educational Needs", "Theory of Education",
                     "Education Special Topics", "Educational Research & Statistics", "Literacy & Reading",
                     "Classroom Management"};
-            Click(getEducation());
-            if (find(getEducationTitle()).isDisplayed()) {
+            click(getEducation());
+            if (findElement(getEducationTitle()).isDisplayed()) {
                 /*Получаем значения панели Предметы и преобразуем в тип строковые*/
                 List<String> getlistSidePanel = new ArrayList();
-                for (WebElement getlist : List_find(getSubjectList())) {
+                for (WebElement getlist : findElementList(getSubjectList())) {
                     getlistSidePanel.add(getlist.getText());
                 }
                 getLog().log(Level.INFO, "Страница проверена");
 
-              /*Assert.assertTrue("Элементы панели не найдены", getlistSidePanel.containsAll(Arrays.asList(arrSubj)));
-*/
+                /*Assert.assertTrue("Элементы панели не найдены", getlistSidePanel.containsAll(Arrays.asList(arrSubj)));
+                 */
             } /*else {
                 Assert.fail("Отсутствует заголовок \"Education\"");
             }*/
@@ -173,7 +173,7 @@ public class ActionPage extends ObgectPage {
     public static void HomePageClick() {
         /*Переход на главную страницу*/
         try {
-            Click(getHomePage());
+            click(getHomePage());
             getLog().log(Level.INFO, "Нажата кнопа " + getHomePage());
         } catch (Exception exBTN) {
             getLog().log(Level.ERROR, "Отсутствует элемент " + getHomePage(), exBTN);
@@ -184,7 +184,7 @@ public class ActionPage extends ObgectPage {
     public static void SearchBtnClick() {
         /*Нажатие на кнопку поиск*/
         try {
-            Click(getSearchBtn());
+            click(getSearchBtn());
             getLog().log(Level.INFO, "Нажата кнопа " + getSearchBtn());
         } catch (Exception exBTN) {
             getLog().log(Level.ERROR, "Отсутствует элемент " + getSearchBtn(), exBTN);
@@ -194,7 +194,7 @@ public class ActionPage extends ObgectPage {
     @Step("Ввод текста в поисковик")
     public static void SeachText(String textsearch) {
         try {
-            find(getSearchEntryField()).sendKeys(textsearch);
+            findElement(getSearchEntryField()).sendKeys(textsearch);
             getLog().log(Level.INFO, "Введен текст " + textsearch);
         } catch (Exception exSeach) {
             getLog().log(Level.ERROR, "Отсутствует элемент " + getSearchEntryField(), exSeach);
@@ -204,19 +204,19 @@ public class ActionPage extends ObgectPage {
     @Step("Сравнение найденных продуктов")
     public static void TitleProductsSearch(String str) {
         try {
-            System.out.println("Номер проверки для MATH " + str);
+            getLog().log(Level.INFO, "Номер проверки для MATH " + str);
 
             List<String> listTitleProduct = new ArrayList<>();
             List<String> list2 = new ArrayList<>();
 
-            for (WebElement getListProduct : List_find(getTitleProducts())) {
+            for (WebElement getListProduct : findElementList(getTitleProducts())) {
                 listTitleProduct.add(getListProduct.getText());
             }
 
             for (String e : listTitleProduct) {
                 if (e.contains("Math")) {
-                    System.out.println("Заголовки содержащие \"Math\": " + e);
-            Assert.assertTrue(e.contains("Math"));
+                    getLog().log(Level.INFO, "Заголовки содержащие \"Math\": " + e);
+                    Assert.assertTrue(e.contains("Math"));
                     list2.add(e);
                 }
 
@@ -235,7 +235,7 @@ public class ActionPage extends ObgectPage {
     public static void BtnAdd() {
         try {
             List<String> listBtnAdd = new ArrayList<>();
-            for (WebElement getListAddToCard : List_find(getButtonAddToCart())) {
+            for (WebElement getListAddToCard : findElementList(getButtonAddToCart())) {
                 listBtnAdd.add(getListAddToCard.getText());
             }
             getLog().log(Level.INFO, "Колличество кнопок \"Add to Cart\" на найденных элементах " + listBtnAdd.size());
